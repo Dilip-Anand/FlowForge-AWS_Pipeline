@@ -1,0 +1,30 @@
+Architecture:
+
+Input Data : The input data is in JSON format file which has transaction details of the retail store
+
+Kinesis data streams : Amazon Kinesis Data Streams (KDS) is a fully managed AWS service that lets you collect, process, and analyze real-time, streaming data at a massive scale.
+In this project we get the real time data from this. 
+
+AWS processor lambda : AWS Lambda is a serverless compute service that can automatically process and respond to events in real time. When integrated with Kinesis Data Streams, Lambda enables near real-time processing of streaming data without the need to manage any servers. 
+In this project this does the polling tasks, and reads the data from the data from kineses 
+
+AWS Kinesis firehouse :  AWS Kinesis Data Firehose is a fully managed service for delivering real-time streaming data to destinations such as Amazon S3, Redshift, OpenSearch, Splunk, Snowflake, and more. It automates the capture, transformation, and loading (ETL) of streaming data with minimal setup or management.
+Its similar to Azure data factory used to insert the adat intio S3 in this project. 
+
+Archive layer: This is a S3 bucket which used to archive the data everytime we geta new file. This basically helps us to easily troubleshoot the issue in future. 
+
+Stage Layer: This is a S3 bucket which is the first layer where the data is stored from Kinesis and used for further processings 
+
+Processing layer: This is the layer where the actual processing happens based on the business requirement. This can be anything like AWS glue, Pyspark-Databricks, EMR etc
+
+RAW layer : This is the also an archive layer S3 bucket where the processed file will be added. So that this will be used for troubleshooting purposes. 
+
+Curated layer : This is the final layer where the processed data is sent, this will be in delta format. 
+
+Amazon SNS : AWS SNS (Simple Notification Service) is a fully managed cloud messaging service that allows applications to send messages (notifications) to subscribers or other applications in real time.
+In this project we are sending the notification using this service once the data is available. 
+
+Amazon Athena : mazon Athena is a fully managed, serverless, interactive query service that makes it easy to analyze data directly in Amazon S3 using standard SQL. 
+The final data is loaded here, where we can query the data 
+
+Apache airflow : Apache Airflow is an open-source platform to programmatically author, schedule, and monitor workflows as Directed Acyclic Graphs (DAGs). It helps automate complex data pipelines and orchestrate tasks with dependencies, retries, and notifications. In our project we use this to automate the entire process. 
